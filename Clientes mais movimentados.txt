@@ -1,0 +1,7 @@
+SELECT 
+(SELECT codigocliente FROM contdocs WHERE documento = c.documento) AS cod
+,(SELECT nome FROM contdocs WHERE documento = c.documento) AS nome,
+(SELECT cidade FROM clientes WHERE codigo = cod) AS cidade,
+SUM(valor) AS total FROM caixaarquivo AS c 
+WHERE c.DATA BETWEEN "2020-01-01" AND "2020-06-30" AND c.dpfinanceiro = "Venda" 
+AND c.estornado = "N" GROUP BY cod HAVING cod > 0 ORDER BY total DESC;
