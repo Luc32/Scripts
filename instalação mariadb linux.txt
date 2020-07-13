@@ -1,0 +1,64 @@
+sudo apt update
+sudo apt install mariadb-server
+sudo mysql_secure_installation
+
+
+sudo mysql
+
+GRANT ALL ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
+
+Exportar banco de dados:
+
+mysqldump -u username -p database_name > novobackup.sql
+
+
+
+Importar Banco de dados:
+
+mysql -u root -p
+
+CREATE DATABASE sice;
+
+mysql -u username -p sice < backupsalvo.sql
+
+
+**Acesso de outros computadores
+
+Se for Mysql:
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+Se for Mariadb:
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+mudar linha:
+
+bind-address = 127.0.0.1
+
+para:
+bind-address = 0.0.0.0
+
+Reiniciar serviço Mysql/Mariadb:
+Mysql:
+sudo systemctl restart mysql.service
+Mariadb:
+sudo systemctl restart mariadb.service
+
+Conferir se deu certo a configuração:
+Executar:
+
+sudo netstat -anp | grep 3306
+
+Deverá mostrar como resultado:
+tcp       0      0 0.0.0.0:3306          0.0.0.0:*        LISTEN         3213/mysqld
+
+
+
+
+
+
+
+
+
+
