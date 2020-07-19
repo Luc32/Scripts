@@ -27,39 +27,39 @@ grant all privileges on *.* to 'root'@'%' identified by '1234567';
 delete from user where host = 'localhost';
 flush privileges;
 exit;
+
+***Reiniciar serviço do mariadb
 sudo systemctl restart mariadb.service
 *****************************************
 
 
+***4- Configurar e impotar banco de dados***
 
-***1-Criar banco de dados sice
+***Criar banco de dados sice***
 sudo mysql -u root -p
 CREATE DATABASE sice;
 exit;
-****2-Importar banco de dados se houver(Conferir se o diretorio do prompt está o mesmo do backup)
+
+****Importar banco de dados se houver(Conferir se o diretorio do prompt está o mesmo do backup)****
 mysql -u root -p1234567 sice < backupsalvo.sql
 
 
-***3-Configuração de acesso na rede ao mariadb/mysql***
-***Configurando acesso de outros computadores da rede
+***Configuração para acesso de outros computadores na rede ao mariadb/mysql***
 
-Se for Mariadb:
 sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
-Se for Mysql:
-sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
-
 
 
 **O comando acima irá abrir um arquivo para editar**
+*Modificar de:**
 
-De:
 bind-address = 127.0.0.1
 
-para:
+**para:***
+
 bind-address = 0.0.0.0
 
 
-***Salvar
+***Salvar***
 
 Crtl + X
 Y
@@ -67,21 +67,18 @@ Enter
 
 
 
-***5-Reiniciar serviço Mysql/Mariadb:***
-Mysql:
-sudo systemctl restart mysql.service
-Mariadb:
+***5-Reiniciar serviço Mariadb:***
 sudo systemctl restart mariadb.service
 
+
 ***6-Conferir se deu certo a configuração:***
-Executar:
 
 sudo apt install net-tools
 sudo netstat -anp | grep 3306
 
-Deverá mostrar como resultado:
-tcp       0      0 0.0.0.0:3306          0.0.0.0:*        LISTEN         3213/mysqld
-
+**Se a instalação deu certo deverá mostrar:***
+tcp       0      0 0.0.0.0:3306...
+unix...conectado...
 
 
 
