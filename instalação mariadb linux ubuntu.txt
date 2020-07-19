@@ -1,70 +1,71 @@
+0-
+**Conferir se há algum mariadb executando na máquina
+sudo systemctl status mariadb
+
 1- Executar no prompt:
 
 sudo apt update
 sudo apt install mariadb-server
+(Você quer continuar? S)
 
 2- *****Conferir se o mariadb está executando*******
 
 
 sudo systemctl status mariadb
+(crt+z)
 
 
 
 3- ****Configuração de senha do banco de dados****
+sudo mysql -u root -p
+(Enter)
 
-sudo mysql_secure_installation
+use mysql;
+update user set plugin='' where User='root';
 
-***Digitar Y para todas as respostas que aparecerem no prompt e configurar a senha quando solicitado*********
-
-
+grant all privileges on *.* to 'root'@'%' identified by '1234567';
+delete from user where host = 'localhost';
+flush privileges;
+exit;
+sudo systemctl restart mariadb.service
 *****************************************
-4- Conectando ao banco de dados já instalado:
-
-
-mysql -u root -p
-
-
-****Será solicitado a senha digitada anteriormente no passo 3*******
-
-
-
-***Conceder todos os acessos ao usuário root***
-GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'p@ssw0rd' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-
-***Configurações do banco de dados terminadas**
-
 
 
 
 ***1-Criar banco de dados sice
+sudo mysql -u root -p
 CREATE DATABASE sice;
-
+exit;
 ****2-Importar banco de dados se houver(Conferir se o diretorio do prompt está o mesmo do backup)
-mysql -u root -p sice < backupsalvo.sql
+mysql -u root -p1234567 sice < backupsalvo.sql
 
 
 ***3-Configuração de acesso na rede ao mariadb/mysql***
 ***Configurando acesso de outros computadores da rede
 
-Se for Mysql:
-sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
 Se for Mariadb:
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+Se for Mysql:
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
 
 
 **O comando acima irá abrir um arquivo para editar**
 
-
-**4-mudar linha:
-
+De:
 bind-address = 127.0.0.1
 
 para:
 bind-address = 0.0.0.0
 
 
-**salvar...
+***Salvar
+
+Crtl + X
+Y
+Enter
+
+
 
 ***5-Reiniciar serviço Mysql/Mariadb:***
 Mysql:
@@ -75,6 +76,7 @@ sudo systemctl restart mariadb.service
 ***6-Conferir se deu certo a configuração:***
 Executar:
 
+sudo apt install net-tools
 sudo netstat -anp | grep 3306
 
 Deverá mostrar como resultado:
@@ -85,15 +87,19 @@ tcp       0      0 0.0.0.0:3306          0.0.0.0:*        LISTEN         3213/my
 
 
 --------------------------------------------------------
+-------------------------------------------------------------
+
 
 Exportar banco de dados:
-
 mysqldump -u root -p sice > novobackup.sql
 
 
+sudo apt-get remove mariadb-server
+sudo apt-get purge --auto-remove mariadb-server
 
 
 
+ALTER mysl.USER 'root'@'%' IDENTIFIED BY 'New-Password-Here';
 
 
 
