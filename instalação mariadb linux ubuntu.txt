@@ -1,17 +1,22 @@
 0-
-**Conferir se há algum mariadb executando na máquina
-sudo systemctl status mariadb
+**Conferir se há algum mariadb ou mysql executando na máquina
+sudo systemctl status mariadb #Mariadb
+systemctl status mysql.service #Mysql
+sudo service mysql status #Mysql
 
 1- Executar no prompt:
 
 sudo apt update
-sudo apt install mariadb-server
+sudo apt install mariadb-server #Mariadb
+sudo apt-get install mysql-server #Mysql
 (Você quer continuar? S)
 
-2- *****Conferir se o mariadb está executando*******
+2- *****Conferir se o mariadb ou mysql está executando*******
 
 
-sudo systemctl status mariadb
+sudo systemctl status mariadb  #Mariadb
+systemctl status mysql.service #Mysql
+sudo service mysql status #Mysql
 (crt+z)
 
 
@@ -29,7 +34,11 @@ flush privileges;
 exit;
 
 ***Reiniciar serviço do mariadb
-sudo systemctl restart mariadb.service
+sudo systemctl restart mariadb.service #Mariadb
+
+***Reinciando serviço mysql
+sudo service mysql stop
+sudo service mysql start
 *****************************************
 
 
@@ -46,7 +55,9 @@ mysql -u root -p1234567 sice < backupsalvo.sql
 
 ***Configuração para acesso de outros computadores na rede ao mariadb/mysql***
 
-sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf #Mariadb
+
+sudo nano /etc/mysql/my.cnf #Mysql
 
 
 **O comando acima irá abrir um arquivo para editar**
@@ -59,7 +70,7 @@ bind-address = 127.0.0.1
 bind-address = 0.0.0.0
 
 
-***Salvar***
+***Para salvar as edições***
 
 Crtl + X
 Y
@@ -68,7 +79,14 @@ Enter
 
 
 ***5-Reiniciar serviço Mariadb:***
-sudo systemctl restart mariadb.service
+sudo systemctl restart mariadb.service #Mariadb
+
+
+
+***Reinciando serviço mysql
+sudo service mysql stop
+sudo service mysql start
+*****************************************
 
 
 ***6-Conferir se deu certo a configuração:***
